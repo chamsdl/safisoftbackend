@@ -5,7 +5,7 @@ const Vendeur= require("../models/Vendeur");
 const jwt=require("jsonwebtoken");
 const Commande =require("../models/Commande");
 const Produit=require("../models/Produit");
-const { default: axios } = require("axios");
+
 function generateToken(admin) {
     return jwt.sign({ id: admin._id, username: admin.username }, 'your_secret_key', { expiresIn: '1h' });
   }
