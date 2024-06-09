@@ -94,6 +94,18 @@ function verifyToken(req, res, next) {
       next();
   });
 }
+router.get('/profileadmin/:id', async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.params.id);
+    if (admin) {
+      res.status(200).send(admin);
+    } else {
+      res.status(404).send('No admin found');
+    }
+  } catch (error) {
+    res.status(500).send('Internal Server Error');
+  }
+});
 router.post("/createvendeur", async (req, res) => {
   try {
       const { username, password, email,nom,prenom,cin ,tel} = req.body;
