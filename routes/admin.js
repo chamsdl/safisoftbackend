@@ -30,18 +30,27 @@ passport.deserializeUser(function (admin, cb) {
 
 router.post("/createadmin", async (req, res) => {
     try {
-        const { username, password, email } = req.body;
+        const { username, password, email, nom, prenom, cin, tel } = req.body;
 
-      
-        if (!username || !password || !email) {
+        // Check for missing required fields
+        if (!username || !password || !email || !nom || !prenom || !cin || !tel) {
             return res.status(400).send("Missing required fields");
         }
 
-        const newAdmin = new Admin({ username, email });
+        // Create a new Admin instance with provided data
+        const newAdmin = new Admin({
+            username: username,
+            email: email,
+            nom: nom,
+            prenom: prenom,
+            cin: cin,
+            tel: tel
+        });
 
+        // Register the new admin with passport-local-mongoose
         await Admin.register(newAdmin, password);
 
-        
+        // Authentication after registration
         passport.authenticate("local-admin")(req, res, () => {
             res.send("Admin created successfully");
         });
@@ -50,6 +59,7 @@ router.post("/createadmin", async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 router.post("/loginadmin", async (req, res) => {
   try {
       const { username, password } = req.body;
