@@ -71,7 +71,7 @@ router.post("/loginadmin", async (req, res) => {
               }
 
               const token = generateToken(user);
-              return res.json({ token });
+                return res.json({ token: token, id: user.id, nom: user.username });
           });
       });
   } catch (error) {
