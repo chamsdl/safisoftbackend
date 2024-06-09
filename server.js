@@ -6,9 +6,10 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const AdminRoutes = require("./routes/admin");
-const VendeurRoutes=require("./routes/vendeur");
+const VendeurRoutes = require("./routes/vendeur");
 const app = express();
-const cors=require("cors");
+const cors = require("cors");
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -20,15 +21,18 @@ app.use(
     saveUninitialized: false
   })
 );
-app.use(cors());
+
+// Configure CORS to allow requests from http://localhost:3000
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
+
 mongoose.connect("mongodb+srv://useryassine:uVbuxLPSCeESz6ZH@cluster0.l38olsk.mongodb.net/?retryWrites=true&w=majority");
 
-
-
 app.use(AdminRoutes);
-
 app.use(VendeurRoutes);
 
 const PORT = process.env.PORT || 3000;
